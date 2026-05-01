@@ -88,6 +88,37 @@ function getNavPagesWithLatest(allNavPages, latestPosts, post) {
     }
   })
 }
+/**
+ * 修改点击顶部频道左侧只展示对应分类
+ */
+const SECTION_MAP = {
+  software: '软件安装',
+  aigc: 'AIGC',
+  study: '学习资料'
+}
+
+function getSectionFromCategory(category = '') {
+  return category.split('/')[0]?.trim() || ''
+}
+
+function getSectionFromPath(path = '') {
+  const currentPath = decodeURIComponent(path.split('?')[0]).replace(/^\/|\/$/g, '')
+  return SECTION_MAP[currentPath] || ''
+}
+
+function filterNavPagesBySection(navPages = [], router, post) {
+  const sectionFromPath = getSectionFromPath(router?.asPath || '')
+  const sectionFromPost = getSectionFromCategory(post?.category || '')
+  const currentSection = sectionFromPath || sectionFromPost
+
+  if (!currentSection) {
+    return navPages
+  }
+
+  return navPages.filter(item => {
+    return getSectionFromCategory(item?.category || '') === currentSection
+  })
+}
 
 /**
  * 基础布局
@@ -113,9 +144,14 @@ const LayoutBase = props => {
 
   const searchModal = useRef(null)
 
-  useEffect(() => {
+  /**useEffect(() => {
     setFilteredNavPages(getNavPagesWithLatest(allNavPages, latestPosts, post))
-  }, [router])
+  }, [router])*/
+  useEffect(() => {
+  const navPages = getNavPagesWithLatest(allNavPages, latestPosts, post)
+  const filtered = filterNavPagesBySection(navPages, router, post)
+  setFilteredNavPages(filtered)
+}, [router.asPath, allNavPages, latestPosts, post])
 
   const GITBOOK_LOADING_COVER = siteConfig(
     'GITBOOK_LOADING_COVER',
