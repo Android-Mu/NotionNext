@@ -87,7 +87,7 @@ const NavPostList = props => {
 
   const homePost = {
     id: '-1',
-    title: '',//siteConfig('DESCRIPTION'),
+    title: '',/*siteConfig('DESCRIPTION'),*/
     href: href.indexOf('/') !== 0 ? '/' + href : href
   }
 
