@@ -182,10 +182,10 @@ const LayoutBase = props => {
               <WWAds className='w-full' orientation='horizontal' />
             </div>
 
-            {/* 底部 */}
+            {/* 底部 
             <div className='md:hidden'>
               <Footer {...props} />
-            </div>
+            </div>*/}
           </div>
 
           {/*  右侧 */}
