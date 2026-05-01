@@ -87,7 +87,7 @@ const NavPostList = props => {
 
   const homePost = {
     id: '-1',
-    title: '',/*siteConfig('DESCRIPTION'),*/
+    title: siteConfig('DESCRIPTION'),
     href: href.indexOf('/') !== 0 ? '/' + href : href
   }
 
@@ -95,8 +95,8 @@ const NavPostList = props => {
     <div
       id='posts-wrapper'
       className='w-full flex-grow space-y-0.5 pr-4 tracking-wider'>
-      {/* 当前文章 */}
-      <BlogPostCard className='mb-4' post={homePost} />
+      {/* 当前文章 
+      <BlogPostCard className='mb-4' post={homePost} />*/}
 
       {/* 文章列表 */}
       {categoryFolders?.map((group, index) => (
