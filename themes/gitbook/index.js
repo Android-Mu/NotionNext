@@ -92,8 +92,8 @@ function getNavPagesWithLatest(allNavPages, latestPosts, post) {
  * 修改点击顶部频道左侧打开对应分类
  */
 const SECTION_MAP = {
+  aigc: 'AIGC',
   software: '软件安装',
-  aigc: 'AI教程',
   study: '学习资料'
 }
 
