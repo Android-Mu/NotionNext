@@ -71,13 +71,13 @@ export default function Header(props) {
           <div className='flex'>
             <LogoBar {...props} />
 
-            {/* 桌面端顶部菜单 */}
+            {/* 桌面端顶部菜单 
             <div className='hidden md:flex'>
               {links &&
                 links?.map((link, index) => (
                   <MenuItemDrop key={index} link={link} />
                 ))}
-            </div>
+            </div>*/}
           </div>
 
           {/* 右侧 */}
@@ -95,6 +95,13 @@ export default function Header(props) {
                 <UserButton />
               </>
             )}
+{/*给右侧添加容器并把导航菜单移动右边*/}
+<div className='hidden md:flex flex-row-reverse items-center'>
+    {links &&
+      links?.map((link, index) => (
+        <MenuItemDrop key={index} link={link} />
+      ))}
+  </div>
             <DarkModeButton className='text-sm items-center h-full hidden md:flex' />
             <SearchInput className='hidden md:flex md:w-52 lg:w-72' />
             {/* 折叠按钮、仅移动端显示 */}
