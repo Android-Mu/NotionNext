@@ -89,35 +89,37 @@ function getNavPagesWithLatest(allNavPages, latestPosts, post) {
   })
 }
 /**
- * 修改点击顶部频道左侧只展示对应分类
+ * 修改点击顶部频道左侧打开对应分类
  */
 const SECTION_MAP = {
   software: '软件安装',
-  aigc: 'AIGC',
+  aigc: 'AI教程',
   study: '学习资料'
 }
 
-function getSectionFromCategory(category = '') {
-  return category.split('/')[0]?.trim() || ''
-}
-
 function getSectionFromPath(path = '') {
-  const currentPath = decodeURIComponent(path.split('?')[0]).replace(/^\/|\/$/g, '')
+  const currentPath = decodeURIComponent(path.split('?')[0])
+    .replace(/^\/|\/$/g, '')
+    .trim()
   return SECTION_MAP[currentPath] || ''
 }
 
-function filterNavPagesBySection(navPages = [], router, post) {
-  const sectionFromPath = getSectionFromPath(router?.asPath || '')
-  const sectionFromPost = getSectionFromCategory(post?.category || '')
-  const currentSection = sectionFromPath || sectionFromPost
+function getSectionFromCategory(category = '') {
+  return String(category).split('/')[0]?.trim() || ''
+}
 
-  if (!currentSection) {
-    return navPages
-  }
+function getFirstPostHrefBySection(navPages = [], path = '') {
+  const currentSection = getSectionFromPath(path)
+  if (!currentSection) return null
 
-  return navPages.filter(item => {
-    return getSectionFromCategory(item?.category || '') === currentSection
+  const matchedPosts = navPages.filter(item => {
+    return getSectionFromCategory(item?.category) === currentSection
   })
+
+  if (!matchedPosts.length) return null
+
+  // 保持原有顺序，直接取当前频道下第一篇文章
+  return matchedPosts[0]?.href || null
 }
 
 /**
@@ -144,14 +146,28 @@ const LayoutBase = props => {
 
   const searchModal = useRef(null)
 
-  /**useEffect(() => {
-    setFilteredNavPages(getNavPagesWithLatest(allNavPages, latestPosts, post))
-  }, [router])*/
+  //自动打开分类下的第一篇文章
   useEffect(() => {
-  const navPages = getNavPagesWithLatest(allNavPages, latestPosts, post)
-  const filtered = filterNavPagesBySection(navPages, router, post)
-  setFilteredNavPages(filtered)
-}, [router.asPath, allNavPages, latestPosts, post])
+    const currentPath = decodeURIComponent(router.asPath.split('?')[0])
+    const currentSection = getSectionFromPath(currentPath)
+
+    // 只有访问顶部频道页时才触发自动跳转
+    if (!currentSection) return
+
+    const targetHref = getFirstPostHrefBySection(allNavPages, currentPath)
+
+    // 找不到目标文章就不跳
+    if (!targetHref) return
+
+    // 避免重复跳到自己
+    if (decodeURIComponent(targetHref) === currentPath) return
+
+    router.replace(targetHref)
+  }, [router.asPath, allNavPages])
+  
+  useEffect(() => {
+    setFilteredNavPages(getNavPagesWithLatest(allNavPages, latestPosts, post))
+  }, [router])
 
   const GITBOOK_LOADING_COVER = siteConfig(
     'GITBOOK_LOADING_COVER',
