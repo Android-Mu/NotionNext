@@ -159,8 +159,8 @@ const LayoutBase = props => {
                   {/* 所有文章列表 */}
                   <NavPostList filteredNavPages={filteredNavPages} {...props} />
                 </div>
-                {/* 页脚 */}
-                <Footer {...props} />
+                {/* 页脚 
+                <Footer {...props} />*/}
               </div>
             </div>
           )}
