@@ -203,7 +203,7 @@ const LayoutBase = props => {
                   {slotRight}
                   {router.route === '/' && (
                     <>
-                      <InfoCard {...props} />
+                      /*<InfoCard {...props} />*/
                       {siteConfig(
                         'GITBOOK_WIDGET_REVOLVER_MAPS',
                         null,
