@@ -94,7 +94,9 @@ function getNavPagesWithLatest(allNavPages, latestPosts, post) {
 const SECTION_MAP = {
   aigc: 'AIGC',
   software: '软件安装',
-  study: '学习资料'
+  study: '学习资料',
+  template: '模板下载',
+  music: '音乐歌曲'
 }
 
 function getSectionFromPath(path = '') {
