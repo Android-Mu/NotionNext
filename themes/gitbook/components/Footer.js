@@ -1,6 +1,6 @@
-import { BeiAnGongAn } from '@/components/BeiAnGongAn'
+/**import { BeiAnGongAn } from '@/components/BeiAnGongAn'
 import { siteConfig } from '@/lib/config'
-import SocialButton from './SocialButton'
+import SocialButton from './SocialButton'*/
 
 
 const Footer = () => {
@@ -69,9 +69,9 @@ const Footer = () => {
           className='underline text-gray-500 dark:text-gray-300'>
           NotionNext {siteConfig('VERSION')}
         </a>
-      </div>
+      </div>*/
       {/* SEO title */}
-      <h1 className='pt-1 hidden'>{siteConfig('TITLE')}</h1>
+      /**<h1 className='pt-1 hidden'>{siteConfig('TITLE')}</h1>
     </footer>
   )
 }*/
