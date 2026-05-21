@@ -279,7 +279,7 @@ const LayoutBase = props => {
 
         {GITBOOK_LOADING_COVER && <LoadingCover />}
 
-       /*显示固定在底部的说明文字*/
+       {/*显示固定在底部的说明文字*/}
        <Footer {...props} />
 
         {/* 回顶按钮 */}
