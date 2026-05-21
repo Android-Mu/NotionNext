@@ -4,9 +4,59 @@ import { isBrowser, loadExternalResource } from '@/lib/utils'
 import mediumZoom from '@fisch0920/medium-zoom'
 import 'katex/dist/katex.min.css'
 import dynamic from 'next/dynamic'
-import { useEffect, useRef } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import { NotionRenderer } from 'react-notion-x'
 import SmartLink from '@/components/SmartLink'
+
+const NotionLink = forwardRef(function NotionLink(
+  { href, children, ...props },
+  ref
+) {
+  const siteLink = String(siteConfig('LINK') || '').replace(/\/$/, '')
+  const url = typeof href === 'string' ? href : href?.pathname || ''
+
+  const isHashLink = typeof url === 'string' && url.startsWith('#')
+  const isAbsoluteHttp = /^https?:\/\//i.test(url)
+  const isMailLink = /^mailto:/i.test(url)
+  const isTelLink = /^tel:/i.test(url)
+  const isInternalPath =
+    typeof url === 'string' && url.startsWith('/') && !url.startsWith('//')
+  const isSiteAbsoluteLink =
+    siteLink && typeof url === 'string' && url.startsWith(siteLink)
+
+  if (isHashLink) {
+    return (
+      <a ref={ref} href={url} {...props}>
+        {children}
+      </a>
+    )
+  }
+
+  if (
+    isAbsoluteHttp ||
+    isMailLink ||
+    isTelLink ||
+    isInternalPath ||
+    isSiteAbsoluteLink
+  ) {
+    return (
+      <a
+        ref={ref}
+        href={url}
+        target='_blank'
+        rel='noopener noreferrer'
+        {...props}>
+        {children}
+      </a>
+    )
+  }
+
+  return (
+    <a ref={ref} href={url} {...props}>
+      {children}
+    </a>
+  )
+})
 
 /**
  * 整个站点的核心组件
@@ -129,7 +179,7 @@ const NotionPage = ({ post, className }) => {
         mapPageUrl={mapPageUrl}
         mapImageUrl={mapImgUrl}
         components={{
-          Link: SmartLink,
+          Link: NotionLink,
           Code,
           Collection,
           Equation,
