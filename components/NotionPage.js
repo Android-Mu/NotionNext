@@ -129,7 +129,7 @@ const NotionPage = ({ post, className }) => {
         mapPageUrl={mapPageUrl}
         mapImageUrl={mapImgUrl}
         components={{
-          nextLink: SmartLink,
+          Link: SmartLink,
           Code,
           Collection,
           Equation,
