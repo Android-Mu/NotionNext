@@ -8,55 +8,19 @@ import { forwardRef, useEffect, useRef } from 'react'
 import { NotionRenderer } from 'react-notion-x'
 import SmartLink from '@/components/SmartLink'
 
-const NotionLink = forwardRef(function NotionLink(
-  { href, children, ...props },
-  ref
-) {
-  const siteLink = String(siteConfig('LINK') || '').replace(/\/$/, '')
-  const url = typeof href === 'string' ? href : href?.pathname || ''
+const handleArticleLinkInNewTab = event => {
+  const anchor = event.target?.closest?.('a')
+  if (!anchor) return
 
-  const isHashLink = typeof url === 'string' && url.startsWith('#')
-  const isAbsoluteHttp = /^https?:\/\//i.test(url)
-  const isMailLink = /^mailto:/i.test(url)
-  const isTelLink = /^tel:/i.test(url)
-  const isInternalPath =
-    typeof url === 'string' && url.startsWith('/') && !url.startsWith('//')
-  const isSiteAbsoluteLink =
-    siteLink && typeof url === 'string' && url.startsWith(siteLink)
+  const href = anchor.getAttribute('href')
+  if (!href) return
 
-  if (isHashLink) {
-    return (
-      <a ref={ref} href={url} {...props}>
-        {children}
-      </a>
-    )
-  }
+  if (href.startsWith('#')) return
+  if (href.startsWith('javascript:')) return
 
-  if (
-    isAbsoluteHttp ||
-    isMailLink ||
-    isTelLink ||
-    isInternalPath ||
-    isSiteAbsoluteLink
-  ) {
-    return (
-      <a
-        ref={ref}
-        href={url}
-        target='_blank'
-        rel='noopener noreferrer'
-        {...props}>
-        {children}
-      </a>
-    )
-  }
-
-  return (
-    <a ref={ref} href={url} {...props}>
-      {children}
-    </a>
-  )
-})
+  event.preventDefault()
+  window.open(href, '_blank', 'noopener,noreferrer')
+}
 
 /**
  * 整个站点的核心组件
@@ -170,6 +134,17 @@ const NotionPage = ({ post, className }) => {
   // const cleanBlockMap = cleanBlocksWithWarn(post?.blockMap);
   // console.log('NotionPage render with post:', post);
 
+  useEffect(() => {
+  const article = document.getElementById('notion-article')
+  if (!article) return
+
+  article.addEventListener('click', handleArticleLinkInNewTab)
+
+  return () => {
+    article.removeEventListener('click', handleArticleLinkInNewTab)
+  }
+}, [post])
+
   return (
     <div
       id='notion-article'
@@ -179,7 +154,6 @@ const NotionPage = ({ post, className }) => {
         mapPageUrl={mapPageUrl}
         mapImageUrl={mapImgUrl}
         components={{
-          Link: NotionLink,
           Code,
           Collection,
           Equation,
