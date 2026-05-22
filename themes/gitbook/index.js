@@ -96,7 +96,8 @@ const SECTION_MAP = {
   software: '软件安装',
   study: '学习资料',
   template: '模板下载',
-  music: '音乐歌曲'
+  music: '音乐歌曲',
+  toolsweb: '工具网站'
 }
 
 function getSectionFromPath(path = '') {
