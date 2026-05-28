@@ -517,18 +517,16 @@ const LayoutArchive = props => {
 const Layout404 = props => {
   const router = useRouter()
   const { locale } = useGlobal()
-  // useEffect(() => {
-  //   // 延时3秒如果加载失败就返回首页
-  //   setTimeout(() => {
-  //     const article = isBrowser && document.getElementById('article-wrapper')
-  //     if (!article) {
-  //       router.push('/').then(() => {
-  //         // console.log('找不到页面', router.asPath)
-  //       })
-  //     }
-  //   }, 3000)
-  // }, [])
   useEffect(() => {
+    // 延时3秒如果加载失败就返回首页
+    setTimeout(() => {
+      const article = isBrowser && document.getElementById('article-wrapper')
+      if (!article) {
+        router.push('/').then(() => {
+          // console.log('找不到页面', router.asPath)
+        })
+      }
+    }, 3000)
   }, [])
 
   return (
