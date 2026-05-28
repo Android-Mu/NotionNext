@@ -6,6 +6,8 @@ import CONFIG from '../config'
 import BlogPostCard from './BlogPostCard'
 import NavPostItem from './NavPostItem'
 
+const SECTION_PAGE_SLUGS = ['software', 'study', 'template', 'music', 'toolsweb', 'aigc']
+
 /**
  * 博客列表滚动分页
  * @param posts 所有文章
@@ -18,8 +20,13 @@ const NavPostList = props => {
   const { locale, currentSearch } = useGlobal()
   const router = useRouter()
 
+  const visibleNavPages = (filteredNavPages || []).filter(item => {
+  return !SECTION_PAGE_SLUGS.includes(item?.slug)
+  })
+
   // 按分类将文章分组成文件夹
-  const categoryFolders = groupArticles(filteredNavPages)
+  const categoryFolders = groupArticles(visibleNavPages)
+  // const categoryFolders = groupArticles(filteredNavPages)
 
   // 存放被展开的分组
   const [expandedGroups, setExpandedGroups] = useState([])
