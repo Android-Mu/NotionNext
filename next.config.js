@@ -149,11 +149,6 @@ const nextConfig = {
     : () => {
       return [
         {
-          source: '/home',
-          destination: '/',
-          permanent: true
-        },
-        {
           source: '/feed',
           destination: '/rss/feed.xml',
           permanent: true
