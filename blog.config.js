@@ -19,6 +19,9 @@ const BLOG = {
   BIO: process.env.NEXT_PUBLIC_BIO || 'okfinish - 软件、学习资料、实用工具收藏家', // 作者简介
   LINK: process.env.NEXT_PUBLIC_LINK || 'https://okfinish.com', // 网站地址
   KEYWORDS: process.env.NEXT_PUBLIC_KEYWORD || 'okfinish,Mac软件推荐,软件资源分享,安装教程,下载地址,安装包下载,学习资料,备考资料,AI视频,AI软件,使用教程,工具神器', // 网站关键词 英文逗号隔开
+  SEO_TITLE: process.env.NEXT_PUBLIC_SEO_TITLE || 'okfinish - 电脑软件、学习资料、模板下载与实用工具整理',
+  SEO_DESCRIPTION: process.env.NEXT_PUBLIC_SEO_DESCRIPTION || 'okfinish 持续整理电脑软件、学习资料、模板下载、音乐歌曲、AIGC 和工具网站内容，方便快速查找安装教程、备考资料和常用资源。',
+  
   BLOG_FAVICON: process.env.NEXT_PUBLIC_FAVICON || '/favicon.ico', // blog favicon 配置, 默认使用 /public/favicon.ico，支持在线图片，如 https://img.imesong.com/favicon.png
   BEI_AN: process.env.NEXT_PUBLIC_BEI_AN || '', // 备案号 闽ICP备XXXXXX
   BEI_AN_LINK: process.env.NEXT_PUBLIC_BEI_AN_LINK || 'https://beian.miit.gov.cn/', // 备案查询链接，如果用了萌备等备案请在这里填写
