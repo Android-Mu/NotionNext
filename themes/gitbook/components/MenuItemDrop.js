@@ -11,10 +11,17 @@ const SECTION_PAGE_PATHS = [
   '/aigc'
 ]
 
-function getNavHref(href) {
+function getNavMarkedHref(href) {
   if (!href) return href
-  if (!SECTION_PAGE_PATHS.includes(href)) return href
   return `${href}?from=nav`
+}
+
+function handleNavClick(e, href, router) {
+  if (!href) return
+  if (!SECTION_PAGE_PATHS.includes(href)) return
+
+  e.preventDefault()
+  router.push(getNavMarkedHref(href))
 }
 
 export const MenuItemDrop = ({ link }) => {
@@ -29,7 +36,7 @@ export const MenuItemDrop = ({ link }) => {
   const selected =
     router.pathname === link.href ||
     router.asPath === link.href ||
-    router.asPath === getNavHref(link.href)
+    router.asPath === getNavMarkedHref(link.href)
 
   return (
     <li
@@ -44,7 +51,10 @@ export const MenuItemDrop = ({ link }) => {
               ? 'bg-green-600 text-white hover:text-white'
               : 'hover:text-green-600')
           }>
-          <SmartLink href={getNavHref(link?.href)} target={link?.target}>
+          <SmartLink
+            href={link?.href}
+            target={link?.target}
+            onClick={e => handleNavClick(e, link?.href, router)}>
             {link?.icon && <i className={link?.icon} />} {link?.name}
           </SmartLink>
         </div>
