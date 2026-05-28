@@ -125,6 +125,13 @@ function getFirstPostHrefBySection(navPages = [], path = '') {
   return matchedPosts[0]?.href || null
 }
 
+function shouldRedirectToFirstPost(path = '', query = {}) {
+  const currentPath = decodeURIComponent(path.split('?')[0])
+  const section = getSectionFromPath(currentPath)
+  if (!section) return false
+  return query?.from === 'nav'
+}
+
 /**
  * 基础布局
  * 采用左右两侧布局，移动端使用顶部导航栏
@@ -151,8 +158,23 @@ const LayoutBase = props => {
 
   //自动打开分类下的第一篇文章
   useEffect(() => {
-    setFilteredNavPages(getNavPagesWithLatest(allNavPages, latestPosts, post))
-  }, [router])
+    if (!router.isReady) return
+  
+    const currentPath = decodeURIComponent(router.asPath.split('?')[0])
+  
+    if (!shouldRedirectToFirstPost(router.asPath, router.query)) return
+  
+    const targetHref = getFirstPostHrefBySection(allNavPages, currentPath)
+  
+    if (!targetHref) return
+    if (decodeURIComponent(targetHref) === currentPath) return
+  
+    router.replace(targetHref)
+  }, [router.isReady, router.asPath, router.query, allNavPages])
+
+  // useEffect(() => {
+  //   setFilteredNavPages(getNavPagesWithLatest(allNavPages, latestPosts, post))
+  // }, [router])
 
   const GITBOOK_LOADING_COVER = siteConfig(
     'GITBOOK_LOADING_COVER',
