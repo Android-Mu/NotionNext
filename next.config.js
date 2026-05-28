@@ -90,16 +90,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
-  // 让 /home 重定向到 /
-  async redirects() {
-    return [
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true
-      }
-    ]
-  },
   
   output: getOutput(),
   staticPageGenerationTimeout: 300,
@@ -158,6 +148,11 @@ const nextConfig = {
     ? undefined
     : () => {
       return [
+        {
+          source: '/home',
+          destination: '/',
+          permanent: true
+        },
         {
           source: '/feed',
           destination: '/rss/feed.xml',
