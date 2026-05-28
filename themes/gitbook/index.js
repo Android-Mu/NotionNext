@@ -49,6 +49,16 @@ const WWAds = dynamic(() => import('@/components/WWAds'), { ssr: false })
 const ThemeGlobalGitbook = createContext()
 export const useGitBookGlobal = () => useContext(ThemeGlobalGitbook)
 
+// 过滤6个page的属性用
+const SECTION_PAGE_SLUGS = [
+  'software',
+  'study',
+  'template',
+  'music',
+  'toolsweb',
+  'aigc'
+]
+
 /**
  * 给最新的文章标一个红点
  */
@@ -378,6 +388,9 @@ const LayoutPostList = props => {
 const LayoutSlug = props => {
   const { post, prev, next, siteInfo, lock, validPassword } = props
   const router = useRouter()
+  //过滤6个page的属性用
+  const isSectionPage = SECTION_PAGE_SLUGS.includes(post?.slug)
+
   // 如果是文档首页文章，则修改浏览器标签
   const index = siteConfig('GITBOOK_INDEX_PAGE', 'about', CONFIG)
   const basePath = router.asPath.split('?')[0]
@@ -416,6 +429,14 @@ const LayoutSlug = props => {
       <Head>
         <title>{title}</title>
         <link rel='canonical' href={canonicalUrl} />
+        {isSectionPage && (
+        <style>{`
+          .notion-page-info,
+          .notion-collection-page-properties {
+            display: none !important;
+          }
+        `}</style>
+      )}
       </Head>
 
       {/* 文章锁 */}
