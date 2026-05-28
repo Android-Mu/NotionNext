@@ -7,6 +7,20 @@ import BlogPostCard from './BlogPostCard'
 import NavPostItem from './NavPostItem'
 
 const SECTION_PAGE_SLUGS = ['software', 'study', 'template', 'music', 'toolsweb', 'aigc']
+const SECTION_PAGE_HREFS = [
+  '/software',
+  '/study',
+  '/template',
+  '/music',
+  '/toolsweb',
+  '/aigc',
+  '/article/software',
+  '/article/study',
+  '/article/template',
+  '/article/music',
+  '/article/toolsweb',
+  '/article/aigc'
+]
 
 /**
  * 博客列表滚动分页
@@ -20,11 +34,13 @@ const NavPostList = props => {
   const { locale, currentSearch } = useGlobal()
   const router = useRouter()
 
+  // 按分类将文章分组成文件夹
   const visibleNavPages = (filteredNavPages || []).filter(item => {
-  return !SECTION_PAGE_SLUGS.includes(item?.slug)
+  const slug = String(item?.slug || '').replace(/^\/+/, '').trim()
+  const href = String(item?.href || '').trim()
+  return !SECTION_PAGE_SLUGS.includes(slug) && !SECTION_PAGE_HREFS.includes(href)
   })
 
-  // 按分类将文章分组成文件夹
   const categoryFolders = groupArticles(visibleNavPages)
   // const categoryFolders = groupArticles(filteredNavPages)
 
