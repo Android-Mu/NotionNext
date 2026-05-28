@@ -88,7 +88,7 @@ function generateLocalesSitemap(link, allPages, locale) {
   const postFields =
     allPages
       ?.filter(p => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish) &&
-        p.slug !== 'home'
+        (p.slug !== 'home')
       ?.map(post => {
         const slugWithoutLeadingSlash = post?.slug.startsWith('/')
           ? post?.slug?.slice(1)
