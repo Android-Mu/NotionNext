@@ -99,7 +99,7 @@ const nextConfig = {
         permanent: true
       }
     ]
-  }
+  },
   
   output: getOutput(),
   staticPageGenerationTimeout: 300,
