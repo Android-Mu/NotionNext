@@ -31,8 +31,6 @@ export const MenuItemDrop = ({ link }) => {
     router.asPath === link.href ||
     router.asPath === getNavHref(link.href)
 
-  // const selected = router.pathname === link.href || router.asPath === link.href
-
   return (
     <li
       className='cursor-pointer list-none items-center flex mx-2 font-semibold'
@@ -46,8 +44,8 @@ export const MenuItemDrop = ({ link }) => {
               ? 'bg-green-600 text-white hover:text-white'
               : 'hover:text-green-600')
           }>
-          <SmartLink href={link?.href} target={link?.target}>
-           {link?.icon && <i className={link?.icon} />} {link?.name}
+          <SmartLink href={getNavHref(link?.href)} target={link?.target}>
+            {link?.icon && <i className={link?.icon} />} {link?.name}
           </SmartLink>
         </div>
       )}
