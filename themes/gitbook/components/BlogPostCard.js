@@ -13,9 +13,9 @@ const BlogPostCard = ({ post, className }) => {
     <SmartLink href={post?.href} passHref>
       <div
         key={post.id}
-        className={`${className} relative py-1.5 cursor-pointer px-1.5 rounded-md hover:bg-gray-50
+        className={`${className} relative py-1.5 cursor-pointer px-1.5 rounded-md hover:bg-green-50
                     ${currentSelected ? 'text-green-500 dark:bg-yellow-100 dark:text-yellow-600 font-semibold' : ' dark:hover:bg-yellow-100 dark:hover:text-yellow-600'}`}>
-        <div className='w-full select-none'>
+        <div className='w-full select-none overflow-hidden text-ellipsis line-clamp-2'>
           {siteConfig('POST_TITLE_ICON') && (
             <NotionIcon icon={post?.pageIcon} />
           )}{' '}
