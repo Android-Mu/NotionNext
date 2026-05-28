@@ -7,13 +7,14 @@ import CONFIG from '../config'
  * Logo区域
  * @param {*} props
  * @returns
+ * href={`/${siteConfig('GITBOOK_INDEX_PAGE', '', CONFIG)}`}
  */
 export default function LogoBar(props) {
   const { siteInfo } = props
   return (
     <div id='logo-wrapper' className='w-full flex items-center mr-2'>
       <SmartLink
-        href={`/${siteConfig('GITBOOK_INDEX_PAGE', '', CONFIG)}`}
+        href='/'
         className='flex text-lg font-bold md:text-2xl dark:text-gray-200 items-center'>
         <LazyImage
           src={siteInfo?.icon}
