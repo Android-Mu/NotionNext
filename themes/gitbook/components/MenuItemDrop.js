@@ -2,6 +2,21 @@ import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+const SECTION_PAGE_PATHS = [
+  '/software',
+  '/study',
+  '/template',
+  '/music',
+  '/toolsweb',
+  '/aigc'
+]
+
+function getNavHref(href) {
+  if (!href) return href
+  if (!SECTION_PAGE_PATHS.includes(href)) return href
+  return `${href}?from=nav`
+}
+
 export const MenuItemDrop = ({ link }) => {
   const [show, changeShow] = useState(false)
   const router = useRouter()
@@ -11,7 +26,12 @@ export const MenuItemDrop = ({ link }) => {
   }
 
   const hasSubMenu = link?.subMenus?.length > 0
-  const selected = router.pathname === link.href || router.asPath === link.href
+  const selected =
+    router.pathname === link.href ||
+    router.asPath === link.href ||
+    router.asPath === getNavHref(link.href)
+
+  // const selected = router.pathname === link.href || router.asPath === link.href
 
   return (
     <li
