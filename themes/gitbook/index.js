@@ -432,9 +432,14 @@ const LayoutSlug = props => {
         {isSectionPage && (
         <style>{`
           .notion-page-info,
-          .notion-collection-page-properties {
+          .notion-collection-page-properties,
+          .notion-page-properties,
+          .notion-property-date,
+          .notion-property-text,
+          .notion-property-multi_select,
+          .notion-property-select {
             display: none !important;
-          }
+           }
         `}</style>
       )}
       </Head>
