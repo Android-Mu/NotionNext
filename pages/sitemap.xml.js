@@ -66,12 +66,12 @@ function generateLocalesSitemap(link, allPages, locale) {
       changefreq: 'daily',
       priority: '0.7'
     },
-    {
-      loc: `${link}${locale}/rss/feed.xml`,
-      lastmod: dateNow,
-      changefreq: 'daily',
-      priority: '0.7'
-    },
+    // {
+    //   loc: `${link}${locale}/rss/feed.xml`,
+    //   lastmod: dateNow,
+    //   changefreq: 'daily',
+    //   priority: '0.7'
+    // },
     {
       loc: `${link}${locale}/search`,
       lastmod: dateNow,
@@ -87,7 +87,8 @@ function generateLocalesSitemap(link, allPages, locale) {
   ]
   const postFields =
     allPages
-      ?.filter(p => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish)
+      ?.filter(p => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish) &&
+        p.slug !== 'home'
       ?.map(post => {
         const slugWithoutLeadingSlash = post?.slug.startsWith('/')
           ? post?.slug?.slice(1)
