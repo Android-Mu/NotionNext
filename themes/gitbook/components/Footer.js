@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer className='w-full border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-[#1a191d]'>
       <div className='mx-auto max-w-5xl px-6 py-8 text-sm leading-7 text-gray-500 dark:text-gray-400'>
-        本站所收集资源均来自网盘用户公开分享，不做任何盈利，仅作个人公益学习，其网盘资源文件的有效性和安全性需自行判断，请勿非法，商业传播，如有侵权，请发邮件（1842324670@qq.com）进行投诉，我们将在第一时间删除对应资源和相关文章！
+        本站所收集资源均来自网盘用户公开分享，不做任何盈利，仅作个人公益学习，其网盘资源文件的有效性和安全性需自行判断，请勿非法，商业传播，如有侵权，请发邮件（yun12712@163.com）进行投诉，我们将在第一时间删除对应资源和相关文章！
       </div>
     </footer>
   )
