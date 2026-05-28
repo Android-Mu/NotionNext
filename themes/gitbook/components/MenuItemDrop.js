@@ -2,23 +2,6 @@ import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-const SECTION_PAGE_PATHS = [
-  '/software',
-  '/study',
-  '/template',
-  '/music',
-  '/toolsweb',
-  '/aigc'
-]
-
-function handleSectionNavClick(href) {
-  if (typeof window === 'undefined') return
-  if (!SECTION_PAGE_PATHS.includes(href)) return
-
-  sessionStorage.setItem('gitbook_section_nav_click', '1')
-  sessionStorage.setItem('gitbook_section_nav_target', href)
-}
-
 export const MenuItemDrop = ({ link }) => {
   const [show, changeShow] = useState(false)
   const router = useRouter()
@@ -43,11 +26,8 @@ export const MenuItemDrop = ({ link }) => {
               ? 'bg-green-600 text-white hover:text-white'
               : 'hover:text-green-600')
           }>
-          <SmartLink
-            href={link?.href}
-            target={link?.target}
-            onClick={() => handleSectionNavClick(link?.href)}>
-            {link?.icon && <i className={link?.icon} />} {link?.name}
+          <SmartLink href={link?.href} target={link?.target}>
+           {link?.icon && <i className={link?.icon} />} {link?.name}
           </SmartLink>
         </div>
       )}
