@@ -262,7 +262,7 @@ const LayoutBase = props => {
                   {slotRight}
                   {router.route === '/' && (
                     <>
-                      /*<InfoCard {...props} />*/
+                      {/*隐藏 InfoCard <InfoCard {...props} /> */}
                       {siteConfig(
                         'GITBOOK_WIDGET_REVOLVER_MAPS',
                         null,
