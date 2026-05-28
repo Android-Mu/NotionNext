@@ -26,6 +26,22 @@ export async function getStaticProps(req) {
   const { locale } = req
   const from = 'index'
   const props = await fetchGlobalAllData({ from, locale })
+  // 读取home内容
+  const indexPageSlug = siteConfig(
+  'GITBOOK_INDEX_PAGE',
+  'home',
+  props?.NOTION_CONFIG
+  )
+
+  const indexPage = props.allPages?.find(
+    page => page?.slug === indexPageSlug
+  )
+
+  if (indexPage?.id) {
+    indexPage.blockMap = await getPostBlocks(indexPage.id, 'index-home')
+    props.post = indexPage
+  }
+
   const POST_PREVIEW_LINES = siteConfig(
     'POST_PREVIEW_LINES',
     12,
