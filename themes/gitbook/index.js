@@ -381,6 +381,13 @@ const LayoutSlug = props => {
   // 如果是文档首页文章，则修改浏览器标签
   const index = siteConfig('GITBOOK_INDEX_PAGE', 'about', CONFIG)
   const basePath = router.asPath.split('?')[0]
+  // 给 /home 加 canonical 指向 / 这个改代码
+  const siteBaseUrl = (siteInfo?.link || '').replace(/\/$/, '')
+  const canonicalUrl =
+  post?.slug === 'home'
+    ? `${siteBaseUrl}/`
+    : `${siteBaseUrl}${basePath}`
+
   const title =
     basePath?.indexOf(index) > 0
       ? `${post?.title} | ${siteInfo?.description}`
@@ -408,6 +415,7 @@ const LayoutSlug = props => {
     <>
       <Head>
         <title>{title}</title>
+        <link rel='canonical' href={canonicalUrl} />
       </Head>
 
       {/* 文章锁 */}
