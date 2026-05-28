@@ -90,6 +90,17 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
+  // 让 /home 重定向到 /
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true
+      }
+    ]
+  }
+  
   output: getOutput(),
   staticPageGenerationTimeout: 300,
 
