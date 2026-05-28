@@ -100,33 +100,6 @@ const SECTION_MAP = {
   toolsweb: '工具网站'
 }
 
-const SECTION_PAGE_SLUGS = ['software', 'study', 'template', 'music', 'toolsweb', 'aigc']
-
-function isSectionPagePath(path = '') {
-  const currentPath = decodeURIComponent(path.split('?')[0])
-    .replace(/^\/|\/$/g, '')
-    .trim()
-  return SECTION_PAGE_SLUGS.includes(currentPath)
-}
-
-function shouldRedirectFromMenuClick(path = '') {
-  if (typeof window === 'undefined') return false
-
-  const clicked = sessionStorage.getItem('gitbook_section_nav_click')
-  const target = sessionStorage.getItem('gitbook_section_nav_target')
-
-  if (clicked !== '1') return false
-  if (!target) return false
-
-  return decodeURIComponent(target) === decodeURIComponent(path.split('?')[0])
-}
-
-function clearSectionNavClickFlag() {
-  if (typeof window === 'undefined') return
-  sessionStorage.removeItem('gitbook_section_nav_click')
-  sessionStorage.removeItem('gitbook_section_nav_target')
-}
-
 function getSectionFromPath(path = '') {
   const currentPath = decodeURIComponent(path.split('?')[0])
     .replace(/^\/|\/$/g, '')
@@ -177,22 +150,6 @@ const LayoutBase = props => {
   const searchModal = useRef(null)
 
   //自动打开分类下的第一篇文章
-  useEffect(() => {
-  const currentPath = decodeURIComponent(router.asPath.split('?')[0])
-
-  if (!isSectionPagePath(currentPath)) return
-  if (!shouldRedirectFromMenuClick(currentPath)) return
-
-  const targetHref = getFirstPostHrefBySection(allNavPages, currentPath)
-
-  clearSectionNavClickFlag()
-
-  if (!targetHref) return
-  if (decodeURIComponent(targetHref) === currentPath) return
-
-  router.replace(targetHref)
-  }, [router.asPath, allNavPages])
-  
   useEffect(() => {
     setFilteredNavPages(getNavPagesWithLatest(allNavPages, latestPosts, post))
   }, [router])
