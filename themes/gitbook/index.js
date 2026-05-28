@@ -307,48 +307,58 @@ const LayoutBase = props => {
  * @returns
  */
 const LayoutIndex = props => {
-  const router = useRouter()
-  const index = siteConfig('GITBOOK_INDEX_PAGE', 'about', CONFIG)
-  const [hasRedirected, setHasRedirected] = useState(false) // 添加状态追踪是否已重定向
+  const { post } = props
 
-  useEffect(() => {
-    const tryRedirect = async () => {
-      if (!hasRedirected) {
-        // 仅当未重定向时执行
-        setHasRedirected(true) // 更新状态，防止多次执行
+  if (!post) {
+    return null
+  }
 
-        // 重定向到指定文章
-        await router.push(index)
-
-        // 使用setTimeout检查页面加载情况
-        setTimeout(() => {
-          const article = document.querySelector(
-            '#article-wrapper #notion-article'
-          )
-          if (!article) {
-            console.log('请检查您的Notion数据库中是否包含此slug页面： ', index)
-
-            // 显示错误信息
-            const containerInner = document.querySelector(
-              '#theme-gitbook #container-inner'
-            )
-            const newHTML = `<h1 class="text-3xl pt-12 dark:text-gray-300">配置有误</h1><blockquote class="notion-quote notion-block-ce76391f3f2842d386468ff1eb705b92"><div>请在您的notion中添加一个slug为${index}的文章</div></blockquote>`
-            containerInner?.insertAdjacentHTML('afterbegin', newHTML)
-          }
-        }, 2000)
-      }
-    }
-
-    if (index) {
-      console.log('重定向', index)
-      tryRedirect()
-    } else {
-      console.log('无重定向', index)
-    }
-  }, [index, hasRedirected]) // 将 hasRedirected 作为依赖确保状态变更时更新
-
-  return null // 不渲染任何内容
+  return <LayoutSlug {...props} />
 }
+
+// const LayoutIndex = props => {
+//   const router = useRouter()
+//   const index = siteConfig('GITBOOK_INDEX_PAGE', 'about', CONFIG)
+//   const [hasRedirected, setHasRedirected] = useState(false) // 添加状态追踪是否已重定向
+
+//   useEffect(() => {
+//     const tryRedirect = async () => {
+//       if (!hasRedirected) {
+//         // 仅当未重定向时执行
+//         setHasRedirected(true) // 更新状态，防止多次执行
+
+//         // 重定向到指定文章
+//         await router.push(index)
+
+//         // 使用setTimeout检查页面加载情况
+//         setTimeout(() => {
+//           const article = document.querySelector(
+//             '#article-wrapper #notion-article'
+//           )
+//           if (!article) {
+//             console.log('请检查您的Notion数据库中是否包含此slug页面： ', index)
+
+//             // 显示错误信息
+//             const containerInner = document.querySelector(
+//               '#theme-gitbook #container-inner'
+//             )
+//             const newHTML = `<h1 class="text-3xl pt-12 dark:text-gray-300">配置有误</h1><blockquote class="notion-quote notion-block-ce76391f3f2842d386468ff1eb705b92"><div>请在您的notion中添加一个slug为${index}的文章</div></blockquote>`
+//             containerInner?.insertAdjacentHTML('afterbegin', newHTML)
+//           }
+//         }, 2000)
+//       }
+//     }
+
+//     if (index) {
+//       console.log('重定向', index)
+//       tryRedirect()
+//     } else {
+//       console.log('无重定向', index)
+//     }
+//   }, [index, hasRedirected]) // 将 hasRedirected 作为依赖确保状态变更时更新
+
+//   return null // 不渲染任何内容
+// }
 
 /**
  * 文章列表 无
