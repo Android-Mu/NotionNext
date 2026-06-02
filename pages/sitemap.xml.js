@@ -5,6 +5,24 @@ import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
 import { extractLangId, extractLangPrefix } from '@/lib/utils/pageId'
 import { getServerSideSitemap } from 'next-sitemap'
 
+const SECTION_PAGE_SLUGS = new Set([
+  'toolsweb',
+  'music',
+  'template',
+  'study',
+  'software',
+  'aigc'
+])
+
+const EXCLUDED_SLUGS = new Set([
+  'home',
+  'archive',
+  'category',
+  'search',
+  'tag',
+  'rss/feed.xml'
+])
+
 export const getServerSideProps = async ctx => {
   let fields = []
   const siteIds = BLOG.NOTION_PAGE_ID.split(',')
@@ -13,7 +31,6 @@ export const getServerSideProps = async ctx => {
     const siteId = siteIds[index]
     const id = extractLangId(siteId)
     const locale = extractLangPrefix(siteId)
-    // 第一个id站点默认语言
     const siteData = await fetchGlobalAllData({
       pageId: id,
       from: 'sitemap.xml'
@@ -27,9 +44,8 @@ export const getServerSideProps = async ctx => {
     fields = fields.concat(localeFields)
   }
 
-  fields = getUniqueFields(fields);
+  fields = getUniqueFields(fields)
 
-  // 缓存
   ctx.res.setHeader(
     'Cache-Control',
     'public, max-age=3600, stale-while-revalidate=59'
@@ -38,84 +54,115 @@ export const getServerSideProps = async ctx => {
 }
 
 function generateLocalesSitemap(link, allPages, locale) {
-  // 确保链接不以斜杠结尾
-  if (link && link.endsWith('/')) {
-    link = link.slice(0, -1)
-  }
+  const baseUrl = normalizeBaseUrl(link)
+  const localePrefix = normalizeLocalePrefix(locale)
+  const dateNow = formatDate(new Date())
 
-  if (locale && locale.length > 0 && locale.indexOf('/') !== 0) {
-    locale = '/' + locale
-  }
-  const dateNow = new Date().toISOString().split('T')[0]
   const defaultFields = [
     {
-      loc: `${link}${locale}`,
+      loc: `${baseUrl}${localePrefix}/`,
       lastmod: dateNow,
       changefreq: 'daily',
-      priority: '0.7'
-    },
-    {
-      loc: `${link}${locale}/archive`,
-      lastmod: dateNow,
-      changefreq: 'daily',
-      priority: '0.7'
-    },
-    {
-      loc: `${link}${locale}/category`,
-      lastmod: dateNow,
-      changefreq: 'daily',
-      priority: '0.7'
-    },
-    // {
-    //   loc: `${link}${locale}/rss/feed.xml`,
-    //   lastmod: dateNow,
-    //   changefreq: 'daily',
-    //   priority: '0.7'
-    // },
-    {
-      loc: `${link}${locale}/search`,
-      lastmod: dateNow,
-      changefreq: 'daily',
-      priority: '0.7'
-    },
-    {
-      loc: `${link}${locale}/tag`,
-      lastmod: dateNow,
-      changefreq: 'daily',
-      priority: '0.7'
+      priority: '1.0'
     }
   ]
+
   const postFields =
     allPages
-      ?.filter(p => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish &&
-        p.slug !== 'home')
+      ?.filter(isIndexablePage)
       ?.map(post => {
-        const slugWithoutLeadingSlash = post?.slug.startsWith('/')
-          ? post?.slug?.slice(1)
-          : post.slug
+        const slug = normalizeSlug(post.slug)
         return {
-          loc: `${link}${locale}/${slugWithoutLeadingSlash}`,
-          lastmod: new Date(post?.publishDay).toISOString().split('T')[0],
-          changefreq: 'daily',
-          priority: '0.7'
+          loc: `${baseUrl}${localePrefix}/${slug}`,
+          lastmod: getLastmod(post, dateNow),
+          changefreq: getChangefreq(slug),
+          priority: getPriority(slug)
         }
       }) ?? []
 
   return defaultFields.concat(postFields)
 }
 
+function normalizeBaseUrl(link = '') {
+  return link.endsWith('/') ? link.slice(0, -1) : link
+}
+
+function normalizeLocalePrefix(locale = '') {
+  if (!locale) {
+    return ''
+  }
+
+  return locale.startsWith('/') ? locale : `/${locale}`
+}
+
+function normalizeSlug(slug = '') {
+  return slug.startsWith('/') ? slug.slice(1) : slug
+}
+
+function isIndexablePage(page) {
+  if (page?.status !== BLOG.NOTION_PROPERTY_NAME.status_publish) {
+    return false
+  }
+
+  const slug = normalizeSlug(page?.slug)
+  if (!slug || EXCLUDED_SLUGS.has(slug)) {
+    return false
+  }
+
+  if (/^(https?:|mailto:|tel:)/i.test(slug)) {
+    return false
+  }
+
+  if (slug.includes('://') || slug.includes('?') || slug.includes('#')) {
+    return false
+  }
+
+  return true
+}
+
+function getLastmod(post, fallbackDate) {
+  const date = post?.lastEditedDate || post?.publishDay
+  return formatDate(date) || fallbackDate
+}
+
+function formatDate(date) {
+  const timestamp = new Date(date)
+  if (Number.isNaN(timestamp.getTime())) {
+    return ''
+  }
+
+  return timestamp.toISOString().split('T')[0]
+}
+
+function getChangefreq(slug) {
+  if (SECTION_PAGE_SLUGS.has(slug)) {
+    return 'weekly'
+  }
+
+  return 'daily'
+}
+
+function getPriority(slug) {
+  if (SECTION_PAGE_SLUGS.has(slug)) {
+    return '0.8'
+  }
+
+  return '0.6'
+}
+
 function getUniqueFields(fields) {
-  const uniqueFieldsMap = new Map();
+  const uniqueFieldsMap = new Map()
 
   fields.forEach(field => {
-    const existingField = uniqueFieldsMap.get(field.loc);
+    const loc = field.loc.replace(/([^:]\/)(\/+)/g, '$1')
+    const existingField = uniqueFieldsMap.get(loc)
 
     if (!existingField || new Date(field.lastmod) > new Date(existingField.lastmod)) {
-      uniqueFieldsMap.set(field.loc, field);
+      uniqueFieldsMap.set(loc, { ...field, loc })
     }
-  });
+  })
 
-  return Array.from(uniqueFieldsMap.values());
+  return Array.from(uniqueFieldsMap.values())
 }
 
 export default () => {}
