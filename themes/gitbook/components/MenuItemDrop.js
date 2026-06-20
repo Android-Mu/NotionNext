@@ -8,7 +8,8 @@ const SECTION_PAGE_PATHS = [
   '/template',
   '/music',
   '/toolsweb',
-  '/aigc'
+  '/aigc',
+  '/game'
 ]
 
 function getNavMarkedHref(href) {
