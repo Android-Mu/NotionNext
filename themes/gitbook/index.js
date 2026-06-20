@@ -95,6 +95,7 @@ const SECTION_MAP = {
   aigc: 'AIGC',
   software: '软件安装',
   study: '学习资料',
+  game: '游戏下载',
   template: '模板下载',
   music: '音乐歌曲',
   toolsweb: '工具网站'
