@@ -98,6 +98,7 @@ const SECTION_MAP = {
   game: '游戏下载',
   template: '模板下载',
   music: '音乐歌曲',
+  wallpaper: '壁纸美图',
   toolsweb: '工具网站'
 }
 
