@@ -94,17 +94,23 @@ const SearchInput = ({ currentSearch, cRef, className }) => {
   }
 
   const [showClean, setShowClean] = useState(false)
+  // 清空搜索框页面自动恢复到搜索之前的状态
   const updateSearchKey = val => {
-    if (lock) {
-      return
-    }
-    searchInputRef.current.value = val
-    if (val) {
-      setShowClean(true)
-    } else {
-      setShowClean(false)
-    }
+  if (lock) {
+    return
   }
+
+  searchInputRef.current.value = val
+  const keyword = val?.trim()
+
+  if (keyword) {
+    setShowClean(true)
+    return
+  }
+
+  setShowClean(false)
+  setFilteredNavPages(allNavPages)
+}
 
   function lockSearchInput() {
     lock = true
