@@ -108,22 +108,27 @@ function getSectionFromPath(path = '') {
   return SECTION_MAP[currentPath] || ''
 }
 
+function normalizeSectionText(value = '') {
+  return String(value)
+    .replace(/[／\\|｜>＞]/g, '/')
+    .split('/')[0]
+    .replace(/\s+/g, '')
+    .trim()
+}
+
 function getSectionFromCategory(category = '') {
-  return String(category).split('/')[0]?.trim() || ''
+  return normalizeSectionText(category)
 }
 
 function getFirstPostHrefBySection(navPages = [], path = '') {
-  const currentSection = getSectionFromPath(path)
+  const currentSection = normalizeSectionText(getSectionFromPath(path))
   if (!currentSection) return null
 
-  const matchedPosts = navPages.filter(item => {
-    return getSectionFromCategory(item?.category) === currentSection
+  const matchedPost = navPages.find(item => {
+    return normalizeSectionText(item?.category) === currentSection
   })
 
-  if (!matchedPosts.length) return null
-
-  // 保持原有顺序，直接取当前频道下第一篇文章
-  return matchedPosts[0]?.href || null
+  return matchedPost?.href || null
 }
 
 function shouldRedirectToFirstPost(path = '', query = {}) {
