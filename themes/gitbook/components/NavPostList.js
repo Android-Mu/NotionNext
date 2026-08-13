@@ -6,7 +6,16 @@ import CONFIG from '../config'
 import BlogPostCard from './BlogPostCard'
 import NavPostItem from './NavPostItem'
 
-const SECTION_PAGE_SLUGS = ['software', 'study', 'template', 'music', 'toolsweb', 'aigc']
+const SECTION_PAGE_SLUGS = [
+  'software',
+  'study',
+  'template',
+  'music',
+  'toolsweb',
+  'aigc',
+  'game',
+  'wallpaper'
+]
 const SECTION_PAGE_HREFS = [
   '/software',
   '/study',
@@ -14,12 +23,16 @@ const SECTION_PAGE_HREFS = [
   '/music',
   '/toolsweb',
   '/aigc',
+  '/game',
+  '/wallpaper',
   '/article/software',
   '/article/study',
   '/article/template',
   '/article/music',
   '/article/toolsweb',
-  '/article/aigc'
+  '/article/aigc',
+  '/article/game',
+  '/article/wallpaper'
 ]
 
 /**
