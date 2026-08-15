@@ -9,7 +9,8 @@ const SECTION_PAGE_PATHS = [
   '/music',
   '/toolsweb',
   '/aigc',
-  '/game'
+  '/game',
+  '/wallpaper'
 ]
 
 function getNavMarkedHref(href) {
