@@ -1,4 +1,4 @@
-name: debug-build (临时诊断用，可删)
+name: debug-build
 
 on:
   push:
@@ -17,10 +17,10 @@ jobs:
           node-version: '20.20.0'
           cache: 'yarn'
 
-      - name: Install (与CF一致: frozen-lockfile)
+      - name: Install (frozen-lockfile 同CF)
         run: yarn install --frozen-lockfile --network-timeout 600000
 
-      - name: Export (与CF一致: yarn export)
+      - name: Export (yarn export 同CF)
         env:
           NOTION_PAGE_ID: 73867766993882a8adff01991960c10b
           NEXT_PUBLIC_THEME: gitbook
