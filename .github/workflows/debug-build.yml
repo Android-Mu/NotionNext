@@ -1,0 +1,34 @@
+name: debug-build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.20.0'
+          cache: 'yarn'
+
+      - name: Install (frozen-lockfile 同CF)
+        run: yarn install --frozen-lockfile --network-timeout 600000
+
+      - name: Export (yarn export 同CF)
+        env:
+          NOTION_PAGE_ID: 73867766993882a8adff01991960c10b
+          NEXT_PUBLIC_THEME: gitbook
+        run: yarn export
+
+      - name: 产物统计
+        if: always()
+        run: |
+          echo "--- out/ ---"
+          ls out 2>/dev/null | head -20 || echo "(no out dir)"
+          find out -name "*.html" 2>/dev/null | wc -l
+          echo "--- sitemap ---"
+          head -c 300 out/sitemap.xml 2>/dev/null || echo "(no sitemap)"
