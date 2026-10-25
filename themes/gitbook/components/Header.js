@@ -2,7 +2,6 @@ import Collapse from '@/components/Collapse'
 import DarkModeButton from '@/components/DarkModeButton'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
-import { SignInButton, SignedOut, UserButton } from '@clerk/nextjs'
 import { useRef, useState } from 'react'
 import CONFIG from '../config'
 import LogoBar from './LogoBar'
@@ -60,8 +59,6 @@ export default function Header(props) {
     links = customMenu
   }
 
-  const enableClerk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-
   return (
     <div id='top-nav' className={'fixed top-0 w-full z-20 ' + className}>
       {/* PC端菜单 */}
@@ -82,19 +79,6 @@ export default function Header(props) {
 
           {/* 右侧 */}
           <div className='flex items-center gap-4'>
-            {/* 登录相关 */}
-            {enableClerk && (
-              <>
-                <SignedOut>
-                  <SignInButton mode='modal'>
-                    <button className='bg-green-500 hover:bg-green-600 text-white rounded-lg px-3 py-2'>
-                      {locale.COMMON.SIGN_IN}
-                    </button>
-                  </SignInButton>
-                </SignedOut>
-                <UserButton />
-              </>
-            )}
 {/*给右侧添加容器并把导航菜单移动右边*/}
 <div className='hidden md:flex flex-row-reverse items-center'>
     {links &&

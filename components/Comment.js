@@ -104,12 +104,6 @@ const Comment = ({ frontMatter, className }) => {
             </div>
           )}
 
-          {COMMENT_WALINE_SERVER_URL && (
-            <div key='Waline'>
-              <WalineComponent />
-            </div>
-          )}
-
           {COMMENT_VALINE_APP_ID && (
             <div key='Valine' name='reply'>
               <ValineComponent path={frontMatter.id} />
@@ -153,13 +147,6 @@ const Comment = ({ frontMatter, className }) => {
     </div>
   )
 }
-
-const WalineComponent = dynamic(
-  () => {
-    return import('@/components/WalineComponent')
-  },
-  { ssr: false }
-)
 
 const CusdisComponent = dynamic(
   () => {

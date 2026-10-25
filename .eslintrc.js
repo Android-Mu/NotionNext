@@ -20,7 +20,7 @@ module.exports = {
     },
     ecmaVersion: 12,
     sourceType: 'module',
-    project: './tsconfig.eslint.json' // 指向新的 ESLint 配置文件
+    project: './tsconfig.json' // 指向 TypeScript 配置文件
   },
   plugins: [
     'react',
