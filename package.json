@@ -31,7 +31,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@babel/runtime": "^8.0.8",
+    "@babel/runtime": "7.28.3",
     "@headlessui/react": "^1.7.19",
     "@next/bundle-analyzer": "^12.3.7",
     "@vercel/analytics": "^1.5.0",
